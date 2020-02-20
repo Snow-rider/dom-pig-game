@@ -26,6 +26,10 @@ body {
     color: #555;
 }
 
+img {
+    border-radius: 15px;
+}
+
 .wrapper {
     width: 1000px;
     position: absolute;
