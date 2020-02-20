@@ -76,7 +76,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer]
 
         // do we have winner?
-        if (scores[activePlayer] >= 20) {
+        if (scores[activePlayer] >= 100) {
             // highlight winner and hide the dice
             document.getElementById('name-' + activePlayer).textContent = 'winner!'
             document.getElementById('rolling-dice').style.display = 'none'
