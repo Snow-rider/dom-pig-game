@@ -145,14 +145,49 @@ i {
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
 
+.win-score {
+    position: absolute;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 25px;
+    position: absolute;
+    font-size: 12px;
+    font-family: Lato;
+    border-color: gray;
+    border-width: .8px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.win-score:focus { 
+    border-color: #EB4D4D;
+    border-width: 1.6px;
+}
+
+.win-score:hover {
+    border-color: #EB4D4D;
+    border-width: 1.6px;
+
+ }
+
 .dice {
     position: absolute;
     left: 50%;
-    top: 178px;
     transform: translateX(-50%);
     height: 100px;
-    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 20px 40px 1px rgba(0, 0, 0, 0.20);
 }
+
+.dice-upper {
+    top: 160px;
+}
+
+.dice-lower {
+    top: 280px;
+}
+
 
 .winner { background-color: #f7f7f7; }
 .winner .player-name { font-weight: 300; color: #EB4D4D; }

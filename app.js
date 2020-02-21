@@ -1,11 +1,15 @@
-let scores, roundScore, activePlayer, isGameOn
+let scores, roundScore, activePlayer, isGameOn, previousDiceRolls, winningScore
 
 startNewGame()
 
+function hideBothDice() {
+    document.getElementById('rolling-dice-upper').style.display = 'none'
+    document.getElementById('rolling-dice-lower').style.display = 'none'
+}
 // initialize game
 function startNewGame() {
     // hide the dice initially
-    document.getElementById('rolling-dice').style.display = 'none'
+    hideBothDice()
 
     // player related stuff
     activePlayer = 0
@@ -27,7 +31,23 @@ function startNewGame() {
     document.getElementById('current-0').textContent = '0'
     document.getElementById('current-1').textContent = '0'
 
+    // get winning scores if set
+    let winningScoreElement = document.querySelector('.win-score')
+    winningScore = winningScoreElement.value ? winningScoreElement.value : 100
+
     isGameOn = true
+}
+
+// roll one dice
+function displayAndRollDice(idSelector) {
+    let dice = Math.floor(Math.random() * 6) + 1  // generate random number
+
+    // display the result
+    let diceDomSelected = document.getElementById(idSelector) // getter, display result to dice
+    diceDomSelected.style.display = 'block'
+    diceDomSelected.src = './icons/dice-' + dice + '.png'
+
+    return dice
 }
 
 // switch player function
@@ -39,29 +59,35 @@ function switchPlayer() {
 
     // current counters to 0
     roundScore = 0
+    previousRoll = null
     document.getElementById('current-0').textContent = '0'
     document.getElementById('current-1').textContent = '0'
 
     // hide dice
-    document.getElementById('rolling-dice').style.display = 'none'
+    hideBothDice()
 }
 
 // roll the dice button
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (isGameOn) {
         // roll dice
-        let dice = Math.floor(Math.random() * 6) + 1  // generate random number
-
-        // display the result
-        let diceDomSelected = document.getElementById('rolling-dice') // getter, display result to dice
-        diceDomSelected.style.display = 'block'
-        diceDomSelected.src = './icons/dice-' + dice + '.png'
+        let diceUpper, diceLower
+        diceUpper = displayAndRollDice('rolling-dice-upper')
+        diceLower = displayAndRollDice('rolling-dice-lower')
+        console.log("dice values", diceUpper, diceLower)
         
         // update
-        if (dice !== 1) {
-            // add score
-            roundScore += dice
+        // cannot be twice 6 on the same dice otherwise total score lost
+        if (previousDiceRolls && (diceUpper === 6  && previousDiceRolls[0] === 6 || diceLower === 6 && previousDiceRolls[1] === 6)) {
+            scores[activePlayer] = 0
+            switchPlayer()
+            // if not 1 on any dice then keep counting
+        } else if (diceUpper !== 1 && diceLower !== 1) {
+            // add scores
+            previousDiceRolls = [diceUpper, diceLower]
+            roundScore += diceUpper + diceLower
             document.getElementById('current-' + activePlayer).textContent = roundScore  // setter, no need to activePlayer.toString() because of type coercion
+            // otherwise switch
         } else {
             switchPlayer()
         }
@@ -76,10 +102,10 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer]
 
         // do we have winner?
-        if (scores[activePlayer] >= 100) {
+        if (scores[activePlayer] >= winningScore) {
             // highlight winner and hide the dice
             document.getElementById('name-' + activePlayer).textContent = 'winner!'
-            document.getElementById('rolling-dice').style.display = 'none'
+            hideBothDice()
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active')
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner')
             isGameOn = false
