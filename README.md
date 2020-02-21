@@ -2,7 +2,7 @@
 
 _Based on the Complete JavaScript course by Jonas Schmedtmann_
 
-**GAME RULES:**
+### How to play?
 
 - The game has 2 players, playing in rounds
 - In each turn, a player rolls 2 dice as many times as (s)he whishes. Each result of a the rolls gets added to his/hers round score
